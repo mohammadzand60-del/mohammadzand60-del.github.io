@@ -9,6 +9,24 @@ const sceneLabel = document.querySelector('#sceneLabel');
 const cursor = document.querySelector('.cursor-orbit');
 let activeScene = -1;
 
+const palettes = {
+  intro: ['#c7ff4a', '#19e3ff', '199, 255, 74'],
+  manifesto: ['#ff7139', '#ff3ca6', '255, 113, 57'],
+  capabilities: ['#20e3d2', '#8b5cf6', '32, 227, 210'],
+  work: ['#f6c453', '#ff4d8d', '246, 196, 83'],
+  path: ['#a78bfa', '#3b82f6', '167, 139, 250'],
+  contact: ['#ff4f91', '#ff9f1c', '255, 79, 145']
+};
+
+function setPalette(section) {
+  const [accent, accent2, rgb] = palettes[section.id] || palettes.intro;
+  const root = document.documentElement;
+  root.style.setProperty('--accent', accent);
+  root.style.setProperty('--accent-2', accent2);
+  root.style.setProperty('--accent-rgb', rgb);
+  chapters.forEach((chapter) => chapter.classList.toggle('is-current', chapter === section));
+}
+
 function loadVideos() {
   videos.forEach((video) => {
     const source = mobileMedia.matches ? video.dataset.mobile : video.dataset.desktop;
@@ -39,6 +57,7 @@ const sceneObserver = new IntersectionObserver((entries) => {
   const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
   if (!visible) return;
   const section = visible.target;
+  setPalette(section);
   setScene(Number(section.dataset.scene || 0), section.dataset.label || '');
   navLinks.forEach((link) => link.classList.toggle('is-active', link.dataset.nav === section.id));
   const chapterIndex = chapters.indexOf(section);
@@ -63,6 +82,7 @@ function updateProgress() {
   const scrollable = document.documentElement.scrollHeight - innerHeight;
   const progress = scrollable > 0 ? (scrollY / scrollable) * 100 : 0;
   document.documentElement.style.setProperty('--progress', `${progress}%`);
+  document.documentElement.style.setProperty('--scroll-turn', `${progress * 3.6}deg`);
 }
 addEventListener('scroll', updateProgress, { passive: true });
 updateProgress();
@@ -98,3 +118,5 @@ document.addEventListener('visibilitychange', () => {
 });
 
 setScene(0, 'SYSTEM / INTRO');
+setPalette(document.querySelector('#intro'));
+
