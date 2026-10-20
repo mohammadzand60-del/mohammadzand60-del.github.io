@@ -155,6 +155,7 @@ main{margin-left:0}
 .project-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(var(--accent-rgb),.34);font:700 10px monospace;letter-spacing:.04em;color:var(--muted);transition:color .2s,border-color .2s}
 .project-links a:hover{color:var(--accent);border-color:var(--accent)}
 .project-links span{color:var(--accent);font-size:15px}
+.education-master{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);color:var(--accent)}
 @media(min-width:981px){.hero-title{font-size:clamp(72px,5.2vw,98px)}.hero{padding-top:150px}.hero-meta{margin-top:42px}}
 @media(max-width:980px){.hero-title{font-size:clamp(46px,10vw,72px);line-height:1.26}.hero-title span{line-height:1.3}.hero-title .outline{margin-right:0}.section-heading h2{font-size:clamp(38px,8vw,62px)}.statement h2{font-size:clamp(36px,7vw,58px)}.contact-body h2{font-size:clamp(46px,11vw,72px);line-height:1.35}.ai-feature{grid-template-columns:1fr;gap:24px}.ai-feature-art{min-height:210px}.ai-feature-art strong{font-size:78px}}
 @media(max-width:560px){.hero-title{font-size:clamp(43px,11.2vw,58px);line-height:1.3}.hero-title span{line-height:1.35}.hero-lead{font-size:17px;line-height:2}.ai-feature{padding:16px}.ai-feature-art{min-height:175px}.ai-feature-copy h3{font-size:30px;line-height:1.45}.ai-feature-copy p{font-size:14px}.timeline-featured{padding:24px 16px}}
