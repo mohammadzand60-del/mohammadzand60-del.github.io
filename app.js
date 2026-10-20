@@ -8,6 +8,7 @@ const sceneNumber = document.querySelector('#sceneNumber');
 const sceneLabel = document.querySelector('#sceneLabel');
 const cursor = document.querySelector('.cursor-orbit');
 const portrait = document.querySelector('[data-portrait]');
+const film = document.querySelector('.film');
 let activeScene = -1;
 
 const palettes = {
@@ -28,9 +29,25 @@ function setPalette(section) {
   chapters.forEach((chapter) => chapter.classList.toggle('is-current', chapter === section));
 }
 
-function loadVideos() {
+function filmEnabled() {
+  return !mobileMedia.matches && film && getComputedStyle(film).display !== 'none';
+}
+
+function unloadVideos() {
   videos.forEach((video) => {
-    const source = mobileMedia.matches ? video.dataset.mobile : video.dataset.desktop;
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+  });
+}
+
+function loadVideos() {
+  if (!filmEnabled()) {
+    unloadVideos();
+    return;
+  }
+  videos.forEach((video) => {
+    const source = video.dataset.desktop;
     if (video.src !== new URL(source, location.href).href) {
       video.src = source;
       video.load();
@@ -44,7 +61,7 @@ function setScene(index, label = '') {
   activeScene = safeIndex;
   videos.forEach((video, i) => {
     video.classList.toggle('is-active', i === safeIndex);
-    if (i === safeIndex && !reduceMotion) video.play().catch(() => {});
+    if (filmEnabled() && i === safeIndex && !reduceMotion) video.play().catch(() => {});
     else video.pause();
   });
   sceneNumber.textContent = String(safeIndex + 1).padStart(2, '0');
@@ -75,8 +92,9 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach((item, index) => {
-  item.style.transitionDelay = `${Math.min(index % 5, 3) * 70}ms`;
-  item.style.setProperty('--stagger', `${Math.min(index % 6, 5) * 75}ms`);
+  const delay = mobileMedia.matches ? 0 : Math.min(index % 5, 3) * 70;
+  item.style.transitionDelay = `${delay}ms`;
+  item.style.setProperty('--stagger', `${mobileMedia.matches ? 0 : Math.min(index % 6, 5) * 75}ms`);
   revealObserver.observe(item);
 });
 
@@ -86,7 +104,14 @@ function updateProgress() {
   document.documentElement.style.setProperty('--progress', `${progress}%`);
   document.documentElement.style.setProperty('--scroll-turn', `${progress * 3.6}deg`);
 }
-addEventListener('scroll', updateProgress, { passive: true });
+let progressFrame = 0;
+addEventListener('scroll', () => {
+  if (progressFrame) return;
+  progressFrame = requestAnimationFrame(() => {
+    updateProgress();
+    progressFrame = 0;
+  });
+}, { passive: true });
 updateProgress();
 
 if (!reduceMotion && matchMedia('(pointer: fine)').matches) {
@@ -148,8 +173,9 @@ document.addEventListener('visibilitychange', () => {
   const current = videos[activeScene];
   if (!current) return;
   if (document.hidden) current.pause();
-  else if (!reduceMotion) current.play().catch(() => {});
+  else if (filmEnabled() && !reduceMotion) current.play().catch(() => {});
 });
 
 setScene(0, 'SYSTEM / INTRO');
 setPalette(document.querySelector('#intro'));
+
