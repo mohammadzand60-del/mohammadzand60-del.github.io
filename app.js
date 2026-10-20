@@ -92,9 +92,9 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach((item, index) => {
-  const delay = mobileMedia.matches ? 0 : Math.min(index % 5, 3) * 70;
+  const delay = mobileMedia.matches ? Math.min(index % 3, 2) * 45 : Math.min(index % 5, 3) * 70;
   item.style.transitionDelay = `${delay}ms`;
-  item.style.setProperty('--stagger', `${mobileMedia.matches ? 0 : Math.min(index % 6, 5) * 75}ms`);
+  item.style.setProperty('--stagger', `${mobileMedia.matches ? Math.min(index % 3, 2) * 65 : Math.min(index % 6, 5) * 75}ms`);
   revealObserver.observe(item);
 });
 
