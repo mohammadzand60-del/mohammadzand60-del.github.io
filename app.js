@@ -75,6 +75,7 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach((item, index) => {
   item.style.transitionDelay = `${Math.min(index % 5, 3) * 70}ms`;
+  item.style.setProperty('--stagger', `${Math.min(index % 6, 5) * 75}ms`);
   revealObserver.observe(item);
 });
 
@@ -93,7 +94,7 @@ if (!reduceMotion && matchMedia('(pointer: fine)').matches) {
     cursor.style.left = `${event.clientX}px`;
     cursor.style.top = `${event.clientY}px`;
   });
-  document.querySelectorAll('a, [data-tilt]').forEach((element) => {
+  document.querySelectorAll('a, [data-tilt], .project').forEach((element) => {
     element.addEventListener('pointerenter', () => { cursor.style.width = '48px'; cursor.style.height = '48px'; });
     element.addEventListener('pointerleave', () => {
       cursor.style.width = '28px'; cursor.style.height = '28px';
@@ -105,8 +106,21 @@ if (!reduceMotion && matchMedia('(pointer: fine)').matches) {
       const rect = card.getBoundingClientRect();
       const x = (event.clientX - rect.left) / rect.width - 0.5;
       const y = (event.clientY - rect.top) / rect.height - 0.5;
+      card.style.setProperty('--pointer-x', `${(x + 0.5) * 100}%`);
+      card.style.setProperty('--pointer-y', `${(y + 0.5) * 100}%`);
       card.style.transform = `perspective(700px) rotateX(${-y * 4}deg) rotateY(${x * 5}deg)`;
     });
+  });
+  document.querySelectorAll('.project').forEach((card) => {
+    card.addEventListener('pointermove', (event) => {
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = (event.clientY - rect.top) / rect.height;
+      card.style.setProperty('--pointer-x', `${x * 100}%`);
+      card.style.setProperty('--pointer-y', `${y * 100}%`);
+      card.style.transform = `perspective(1000px) rotateX(${(0.5 - y) * 2.5}deg) rotateY(${(x - 0.5) * 3}deg) translateY(-3px)`;
+    });
+    card.addEventListener('pointerleave', () => { card.style.transform = ''; });
   });
 }
 
