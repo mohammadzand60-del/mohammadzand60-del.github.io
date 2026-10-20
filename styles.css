@@ -50,3 +50,31 @@ body::after{right:22vw;bottom:-24vw;background:var(--accent-2)}
 @media(max-width:980px){body::before,body::after{width:70vw;height:70vw;opacity:.075;filter:blur(75px)}.chapter::before{left:-20%;top:18%}.chapter::after{display:none}.film-frame::before{background:linear-gradient(180deg,rgba(var(--accent-rgb),.14),transparent 48%)}}
 @media(prefers-reduced-motion:reduce){body::before,body::after{display:none}.chapter::before{transform:none}.hero-title .outline,.section-heading h2 span,.contact-body h2 span{background-position:center}}
 
+/* Continuous editorial flow: replace the full-screen slide rhythm with a real page. */
+.chapter{min-height:0;padding:116px 6vw 110px;justify-content:flex-start;border-bottom:0;overflow:visible}
+.chapter::before{position:absolute;z-index:-1;pointer-events:none}
+.chapter::after{z-index:-1;pointer-events:none}
+.hero{min-height:calc(100svh - 82px);padding-top:158px;padding-bottom:118px;justify-content:center}
+.hero .scroll-cue{bottom:32px}
+.manifesto{background:linear-gradient(115deg,rgba(255,255,255,.018),transparent 55%)}
+.statement{margin:34px 0 42px}
+.education{margin-top:38px}
+.capabilities,.path{background:linear-gradient(110deg,rgba(255,255,255,.012),transparent 58%)}
+.section-heading{margin:22px 0 38px}
+.capability{min-height:190px}
+.work{background:linear-gradient(135deg,#0b0e10,#0d1012 48%,#090b0d)}
+.projects{gap:16px}
+.project{min-height:260px}
+.project-featured{min-height:320px}
+.timeline{margin-top:24px}
+.timeline-item{padding:24px 0}
+.contact{min-height:0;padding-top:130px;padding-bottom:48px;background:radial-gradient(circle at 75% 50%,rgba(var(--accent-rgb),.09),transparent 34%),linear-gradient(140deg,#0b0d10,#090b0d 65%)}
+.contact-body{width:100%;max-width:960px;margin:0}
+.contact-body h2{margin-bottom:42px}
+.contact-link{z-index:0}
+.contact-link::before{z-index:-1}
+footer{position:relative;right:auto;bottom:auto;left:auto;margin-top:90px;padding-top:20px;border-top:1px solid var(--line)}
+@media(min-width:981px){.chapter:not(.hero){padding-top:92px;padding-bottom:94px}.contact{padding-top:110px;padding-bottom:32px}}
+@media(max-width:980px){.chapter{padding:86px 22px 78px}.hero{min-height:88svh;padding-top:110px;padding-bottom:100px;justify-content:center}.contact{min-height:0;padding-top:90px;padding-bottom:32px}footer{margin-top:70px}}
+@media(max-width:560px){.chapter{min-height:0;padding-top:72px;padding-bottom:66px}.hero{min-height:94svh;padding-top:105px;padding-bottom:90px}.section-heading{margin:18px 0 30px}.statement{margin:28px 0 34px}.education{margin-top:30px}.contact{padding-top:82px;padding-bottom:25px}.contact-body h2{margin-bottom:32px}footer{margin-top:58px}}
+
