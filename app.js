@@ -7,6 +7,7 @@ const dots = [...document.querySelectorAll('.progress-rail li')];
 const sceneNumber = document.querySelector('#sceneNumber');
 const sceneLabel = document.querySelector('#sceneLabel');
 const cursor = document.querySelector('.cursor-orbit');
+const portrait = document.querySelector('[data-portrait]');
 let activeScene = -1;
 
 const palettes = {
@@ -122,6 +123,25 @@ if (!reduceMotion && matchMedia('(pointer: fine)').matches) {
     });
     card.addEventListener('pointerleave', () => { card.style.transform = ''; });
   });
+  if (portrait) {
+    portrait.addEventListener('pointermove', (event) => {
+      const rect = portrait.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      portrait.style.setProperty('--portrait-x', `${x * 12}px`);
+      portrait.style.setProperty('--portrait-y', `${y * 10}px`);
+      portrait.style.setProperty('--portrait-rotate', `${x * 2.2}deg`);
+      portrait.style.setProperty('--portrait-light-x', `${(x + 0.5) * 100}%`);
+      portrait.style.setProperty('--portrait-light-y', `${(y + 0.5) * 100}%`);
+    });
+    portrait.addEventListener('pointerleave', () => {
+      portrait.style.setProperty('--portrait-x', '0px');
+      portrait.style.setProperty('--portrait-y', '0px');
+      portrait.style.setProperty('--portrait-rotate', '0deg');
+      portrait.style.setProperty('--portrait-light-x', '50%');
+      portrait.style.setProperty('--portrait-light-y', '42%');
+    });
+  }
 }
 
 document.addEventListener('visibilitychange', () => {
@@ -133,4 +153,3 @@ document.addEventListener('visibilitychange', () => {
 
 setScene(0, 'SYSTEM / INTRO');
 setPalette(document.querySelector('#intro'));
-
